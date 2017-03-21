@@ -9,7 +9,8 @@ $(document).ready(function() {
     clientID: AUTH0_CLIENT_ID,
     redirectUri: AUTH0_CALLBACK_URL,
     responseType: 'token id_token',
-    audience: 'https://' + AUTH0_DOMAIN + '/userinfo'
+    audience: 'https://' + AUTH0_DOMAIN + '/userinfo',
+    leeway: 5
   });
 
   var authResult = webAuth.parseHash(function(err, authResult) {
@@ -22,9 +23,8 @@ $(document).ready(function() {
     }
     if (err) {
       window.location.hash = '';
-      alert('Error: ' + err.error);
-    } else {
       displayAsNotAuthenticated();
+      alert('Error: ' + err.error);
     }
   });
 
@@ -109,7 +109,7 @@ $(document).ready(function() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    webAuth.logout({client_id: AUTH0_CLIENT_ID, redirect_to: 'http://localhost:3000'})
+    webAuth.logout({client_id: AUTH0_CLIENT_ID, returnTo: 'http://localhost:3000'});
     displayAsNotAuthenticated();
   }
 
